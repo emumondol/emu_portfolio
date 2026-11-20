@@ -106,6 +106,8 @@
   const input = $('#senti-input');
   const messages = $('#senti-messages');
   const sentiForm = $('#senti-form');
+  const sentiNote = $('.senti-note', chatBox);
+  const defaultSentiNote = sentiNote.textContent;
   let history = [];
   const greeting = "Hi! I'm SENTI, Emdadul's personal AI portfolio assistant. I can help you explore his skills, projects, education, certifications, and professional background. What would you like to know?";
   const greetingBn = 'হাই! আমি SENTI, এমদাদুলের ব্যক্তিগত পোর্টফোলিও সহকারী। তাঁর দক্ষতা, প্রজেক্ট, শিক্ষা, সার্টিফিকেট এবং পেশাগত অভিজ্ঞতা সম্পর্কে জানতে সাহায্য করতে পারি। কী জানতে চান?';
@@ -173,11 +175,17 @@
     chatBox.classList.add('is-thinking');
     let answer;
     try {
-      const response = await fetch('/.netlify/functions/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: question, history: history.slice(-8) }) });
+      const response = await fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: question, history: history.slice(-8) }) });
       if (!response.ok) throw new Error('AI function unavailable');
       const result = await response.json();
-      answer = typeof result.reply === 'string' && result.reply.trim() ? result.reply.trim() : localReply(question, detectLanguage(question));
-    } catch { answer = localReply(question, detectLanguage(question)); }
+      if (typeof result.reply !== 'string' || !result.reply.trim()) throw new Error('AI function returned an invalid response');
+      answer = result.reply.trim();
+      sentiNote.textContent = defaultSentiNote;
+    } catch (error) {
+      console.warn('SENTI is using a local answer because the API is unavailable.', error);
+      answer = localReply(question, detectLanguage(question));
+      sentiNote.textContent = 'AI unavailable; showing a local profile answer.';
+    }
     chatBox.classList.remove('is-thinking');
     typing.remove(); addMessage(answer, 'assistant');
     history.push({ role: 'user', text: question }, { role: 'assistant', text: answer });

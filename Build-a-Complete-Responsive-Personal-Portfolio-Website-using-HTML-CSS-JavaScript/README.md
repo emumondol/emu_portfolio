@@ -1,38 +1,50 @@
 # Emdadul Haque Emu — Developer Portfolio
 
-This site rebrands the repository's HTML/CSS/JavaScript starter for Emdadul Haque Emu. Clear Inter/Poppins typography, the navy/cyan palette, Boxicons styling, Typed.js headline effect, rounded buttons, and slide animations keep the original visual language. The starter wallpaper included another person's portrait, so the hero uses a matching abstract glow background and centered CSS rings. The light theme uses high-contrast text with frosted, glossy surfaces. The required portfolio sections and SENTI assistant extend that same style.
+A responsive static portfolio with a Vercel Function for the optional SENTI AI assistant. The site uses the existing navy/cyan design, semantic HTML, accessible interactions, and responsive layouts.
 
-## Local development
+## Local preview
 
-To run the Netlify Function locally:
+```sh
+node build.mjs
+python3 -m http.server 4173 --directory dist
+```
 
-1. Install Node.js and the [Netlify CLI](https://docs.netlify.com/cli/get-started/).
-2. Copy `.env.example` to `.env` and set `GEMINI_API_KEY` to a private Gemini API key. Never place a real key in browser code or commit it.
-3. Run `netlify dev` from this folder and open the local URL it prints.
+Open `http://localhost:4173`. The chat uses its built-in verified-profile replies when the API is unavailable.
 
-Without the function or an API key, SENTI uses built-in answers from verified portfolio information. The contact form validates entries and opens the visitor's email app with a prepared draft; it does not send email directly.
+To run the Vercel Function locally, install the Vercel CLI and run `vercel dev` from this directory. Set `GEMINI_API_KEY` in Vercel Project Settings or in a private local environment file. Do not commit credentials.
 
-## Production build and deployment
+## Build and tests
 
-- Run `node build.mjs` to create the static site in `dist/`. The build includes the abstract hero background and Emu's supplied profile image and certificate.
-- Deploy this repository to Netlify using `netlify.toml`. Netlify runs the build script, publishes `dist/`, and deploys `netlify/functions/chat.mjs` separately.
-- Set `GEMINI_API_KEY` in Netlify environment variables. Optionally set `GEMINI_MODEL` to a model enabled for that key; the current default is `gemini-3.6-flash`.
-- Redeploy after setting environment variables. SENTI falls back to local portfolio answers if the function is unavailable.
+```sh
+node build.mjs
+node --test
+node --check main.js
+node --check api/chat.mjs
+```
 
-## Verified content
+The build copies the static site into `dist/`. When `SITE_URL` is set, or Vercel's `VERCEL_PROJECT_PRODUCTION_URL` is available, it also generates the canonical URL, social preview URLs, `robots.txt`, and `sitemap.xml`. The generated Person structured data is included in the HTML. On Vercel the production domain is used automatically; set `SITE_URL` to override it when using a custom domain.
 
-GitHub's public profile API reported zero public repositories at inspection time. The Projects section offers clearly labeled interactive concepts until Emu can provide completed work; it does not present them as built projects. Emu supplied **HTML (85%)**, **JavaScript (70%)**, **Java (75%)**, **CSS (80%)**, and **C (85%)** as skill proficiency estimates. His academic details are **Software Engineering student at Daffodil International University**, with expected completion on **December 31, 2028**. The supplied PDFs verify Intellipaat's **Free SQL Certification Course**, issued **March 24, 2026** (certificate ID **25871-443-619275**), and participation in DIU's **Day Long Seminar on Career Planning Roadmap** on **April 16, 2026**.
+## Deploy to Vercel
 
-The portrait in `assets/emu-profile-optimized.jpg` is a compressed copy of the supplied image; the original remains in the workspace root. `assets/certificate.pdf` and `assets/diu-career-planning-roadmap.pdf` are the supplied certificates and can be previewed from the Certifications section.
+1. Import the repository into Vercel, or run `vercel` from this project directory.
+2. If the repository contains multiple projects, set this folder as the Vercel **Root Directory**.
+3. Keep the build settings from `vercel.json`: build command `node build.mjs`, output directory `dist`.
+4. Add `GEMINI_API_KEY` in Vercel Project Settings > Environment Variables to enable live AI replies. `GEMINI_MODEL` is optional and defaults to `gemini-3.5-flash`.
+5. Deploy. The `/api/chat` endpoint is deployed as a Vercel Function. If the key is not configured or the service is unavailable, SENTI clearly indicates that it is using local profile answers.
+
+Vercel injects the production URL into the build so the canonical link, Open Graph metadata, `robots.txt`, and sitemap use the deployed domain. Make sure **System Environment Variables** are enabled in Vercel; otherwise set `SITE_URL` to the assigned HTTPS production domain. For a custom domain, set `SITE_URL` to its HTTPS origin and redeploy.
+
+## Portfolio facts
+
+Emu supplied **HTML (85%)**, **JavaScript (70%)**, **Java (75%)**, **CSS (80%)**, and **C (85%)** as skill estimates. He is a Software Engineering student at Daffodil International University, with expected completion on **December 31, 2028**. The supplied PDFs verify Intellipaat's **Free SQL Certification Course**, issued **March 24, 2026** (certificate ID **25871-443-619275**), and participation in DIU's **Day Long Seminar on Career Planning Roadmap** on **April 16, 2026**.
 
 ## Main files
 
-- `index.html` — identity, required sections, navigation, contact form, and SENTI markup
-- `stylesheet.css` — original visual language plus matching styles for new sections and mobile layouts
-- `main.js` — Typed.js, navigation, theme persistence, contact draft, certificate preview, and SENTI behavior
-- `netlify/functions/chat.mjs` — validated server-side Gemini integration and portfolio knowledge
-- `build.mjs` — dependency-free production copy step
-- `netlify.toml` — Netlify publish/function configuration and response headers
+- `index.html` — metadata, structured content, navigation, contact form, and SENTI markup
+- `stylesheet.css` — responsive visual design and animations
+- `main.js` — navigation, theme persistence, form behavior, certificate previews, and SENTI
+- `api/chat.mjs` — validated Vercel Function for the Gemini API
+- `build.mjs` — static build and SEO URL generation
+- `vercel.json` — Vercel build, function, and security-header configuration
+- `test/chat-api.test.mjs` — API validation and provider-response tests
 - `.env.example` — environment variable names only; no credentials
-
-No Gemini API key was supplied, so live provider responses have not been tested. The existing Git remote still points to the starter author's repository; confirm or update it before pushing to a personal remote.
