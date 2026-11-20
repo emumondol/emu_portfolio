@@ -21,7 +21,7 @@ if (configuredSiteUrl) {
 
 await rm(out, { recursive: true, force: true });
 await mkdir(out, { recursive: true });
-for (const file of ['stylesheet.css', 'main.js']) {
+for (const file of ['stylesheet.css', 'main.js', 'faq.mjs']) {
   await cp(new URL(`./${file}`, import.meta.url), new URL(`./dist/${file}`, import.meta.url));
 }
 await cp(new URL('./assets/', import.meta.url), new URL('./dist/assets/', import.meta.url), { recursive: true });

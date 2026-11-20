@@ -3,11 +3,6 @@
   "framework": null,
   "buildCommand": "node build.mjs",
   "outputDirectory": "dist",
-  "functions": {
-    "api/chat.mjs": {
-      "maxDuration": 30
-    }
-  },
   "headers": [
     {
       "source": "/(.*)",
