@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none">
+  <defs>
+    <linearGradient id="base" x1="0" y1="0" x2="1920" y2="1080" gradientUnits="userSpaceOnUse"><stop stop-color="#081b29"/><stop offset=".58" stop-color="#081b29"/><stop offset="1" stop-color="#10152d"/></linearGradient>
+    <radialGradient id="aura" cx="0" cy="0" r="1" gradientTransform="matrix(0 475 -520 0 1460 535)" gradientUnits="userSpaceOnUse"><stop stop-color="#00eeff" stop-opacity=".28"/><stop offset=".55" stop-color="#7745c6" stop-opacity=".18"/><stop offset="1" stop-color="#081b29" stop-opacity="0"/></radialGradient>
+    <linearGradient id="ridge" x1="970" y1="860" x2="1660" y2="1100" gradientUnits="userSpaceOnUse"><stop stop-color="#152242"/><stop offset="1" stop-color="#321d52"/></linearGradient>
+  </defs>
+  <path fill="url(#base)" d="M0 0h1920v1080H0z"/>
+  <ellipse cx="1460" cy="535" fill="url(#aura)" rx="520" ry="475"/>
+  <path fill="url(#ridge)" fill-opacity=".48" d="m0 1000 255-104 160 61 244-181 172 122 200-88 194 114 187-155 185 126 151-91 172 97v199H0v-100Z"/>
+  <path stroke="#4e3b75" stroke-opacity=".35" stroke-width="2" d="m0 1000 255-104 160 61 244-181 172 122 200-88 194 114 187-155 185 126 151-91 172 97"/>
+</svg>
